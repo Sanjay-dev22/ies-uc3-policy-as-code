@@ -1,0 +1,3 @@
+[
+  { "startTime": "2024-04-15T12:00:00Z", "kWh": 100.5, "note": "fractional smart-meter reading straddling the slab-0-100 / slab-101-300 boundary, outside any surcharge window" }
+]

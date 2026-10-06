@@ -1,0 +1,18 @@
+{
+  "name": "ies-uc3-policy-as-code",
+  "version": "0.1.0",
+  "description": "IES UC3 (Policy as Code / Tariff Intelligence) prototype: author + sign IES_Policy objects, evaluate bills from them, and prove two independent evaluators (Node + Python) agree.",
+  "type": "module",
+  "scripts": {
+    "keygen": "node src/keygen.js",
+    "author": "node src/policyEngine.js",
+    "verify": "node src/verifyPolicy.js",
+    "test": "node test/run.js",
+    "demo:ambiguity": "node test/ambiguity-demo.js"
+  },
+  "license": "CC-BY-4.0",
+  "devDependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1"
+  }
+}

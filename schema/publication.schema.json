@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IES_Policy publication envelope (proposed)",
+  "description": "Proposed additive wrapper carrying who published an IES_Policy, in which currency, which earlier version it replaces, and a signature over all of it. It does not modify IES_Policy: the `policy` member is the upstream IES_Policy object exactly as published, validated separately against the upstream schema.",
+  "type": "object",
+  "required": ["policy", "publication"],
+  "properties": {
+    "policy": {
+      "type": "object",
+      "description": "An IES_Policy object, unmodified. Only its type is checked here; its own fields are governed by the upstream IES_Policy schema.",
+      "required": ["@type"],
+      "properties": { "@type": { "const": "IES_Policy" } }
+    },
+    "publication": {
+      "type": "object",
+      "required": ["issuer", "issuedAt", "replaces", "currency", "proof"],
+      "properties": {
+        "issuer": {
+          "type": "string",
+          "pattern": "^did:web:[A-Za-z0-9.%:-]+$",
+          "description": "did:web identifier of the publishing authority. The verification key is resolved from this DID's document, never taken from the envelope."
+        },
+        "issuedAt": { "type": "string", "format": "date-time", "description": "When this envelope was issued." },
+        "replaces": {
+          "type": ["string", "null"],
+          "description": "The `id` (not the `policyID`) of the policy version this one amends; null on first publication."
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$",
+          "description": "ISO 4217 code of the currency every price in `policy` is denominated in. One value per policy."
+        },
+        "proof": {
+          "type": "object",
+          "required": ["type", "verificationMethod", "created", "proofPurpose", "proofValue"],
+          "properties": {
+            "type": { "type": "string", "description": "Signature scheme label. The reference implementation uses 'Ed25519-JCS-envelope': Ed25519 over a JSON-canonicalised form of { policy, publication } with proofValue omitted." },
+            "verificationMethod": { "type": "string", "pattern": "^did:web:[A-Za-z0-9.%:-]+#.+$", "description": "DID URL of the key inside the issuer's DID document." },
+            "created": { "type": "string", "format": "date-time" },
+            "proofPurpose": { "const": "assertionMethod" },
+            "proofValue": { "type": "string", "pattern": "^[A-Za-z0-9+/]+={0,2}$", "description": "Base64 signature." }
+          }
+        }
+      }
+    }
+  }
+}

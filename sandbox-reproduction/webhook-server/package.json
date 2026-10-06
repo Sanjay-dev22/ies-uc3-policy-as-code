@@ -1,0 +1,7 @@
+{
+  "name": "ies-uc3-live-webhook",
+  "version": "0.1.0",
+  "description": "No dependencies of its own -- this exists only so Node treats server.js as an ES module inside the Docker container built by ../webhook-server/Dockerfile, whose build context does not include the repository root's package.json.",
+  "type": "module",
+  "private": true
+}
